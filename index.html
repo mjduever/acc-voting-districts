@@ -7,8 +7,37 @@
   <meta name='viewport' content='width=device-width, initial-scale=1'>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
   <link href='https://api.mapbox.com/mapbox-assembly/v0.17.0/assembly.min.css' rel='stylesheet'>
-  <script async defer src='https://api.mapbox.com/mapbox-assembly/v0.17.0/assembly.js'></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
+  <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.js"></script>
+<script async defer src='https://api.mapbox.com/mapbox-assembly/v0.17.0/assembly.js'></script>
+  <script src ="data/precincts.geojson"></script>
+  <script src="data/commission.geojson"></script>
+  <script src="data/congress.geojson"></script>
+  <script src="data/house.geojson"></script>
+  <script src="data/schoolboard.geojson"></script>
 
+  <style>
+  .select--stroke--2 {
+      box-shadow: inset 0 0 0 2px currentColor;
+    }
+
+.select--stroke + .select-arrow {
+      color: var(--gray);
+    }
+
+.select--stroke:hover {
+      background-color: var(--transparent);
+      color: var(--gray-dark);
+    }
+
+.select--stroke:hover + .select-arrow {
+    border-top-color: currentColor;
+  }
+
+
+  </style>
 
 </head>
 
@@ -31,16 +60,21 @@
     <div class='col col--12 col--9-ml h180 h-full-ml'>
       <div id="map" class='viewport-twothirds viewport-full-ml'></div>
 
-      <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
-      <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
-      <script src ="data/precincts.geojson"></script>
-      <script src="data/commission.geojson"></script>
-      <script src="data/congress.geojson"></script>
-      <script src="data/house.geojson"></script>
-      <script src="data/schoolboard.geojson"></script>
+      <div class='select-container'>
+        <select class='select select--stroke select--stroke--2'>
+          <option>Precincts</option>
+          <option>Commission Districts</option>
+          <option>School Board Districts</option>
+          <option>State House Districts</option>
+          <option>Congressional Districts</option>
+        </select>
+        <div class='select-arrow'></div>
+      </div>
 
 
-      <script>
+
+
+    <script>
 
       var map = L.map('map', {
         center: [33.938718, -83.371200],
@@ -52,34 +86,74 @@
           maxZoom: 16,
           minZoom: 11
       }).addTo(map);
-
+// add geocoder
+      L.control.geocoder('mapzen-zeZY4Xt').addTo(map);
+      
   //load geojson
-$.getJSON("data/congress.geojson",function(data){
-    var congressLayer = L.geoJson(data,{
+$.getJSON("data/congress.json",function(district){
+    var congressLayer = L.geoJson(district,{
       style: function(feature){
         return{
           color:"#ddddd",
-          weight: 1,
+          weight: 2,
           fillOpacity: .7,
-          fillColor: "green"
+          fillColor: "#33a02c"
         };
       }
     }).addTo(map);
 });
-//load house layer
+// //load house layer
 // $.getJSON("data/house.geojson",function(data){
 //     var houseLayer = L.geoJson(data,{
 //       style: function(feature){
 //         return{
 //           color:"#ddddd",
-//           weight: 1,
+//           weight: 2,
 //           fillOpacity: .7,
-//           fillColor: "orange"
+//           fillColor: "#b2df8a"
 //         };
 //       }
 //     }).addTo(map);
 // });
-
+// //load schoolboard layer
+// $.getJSON("data/schoolboard.geojson",function(data){
+//     var schoolboardLayer = L.geoJson(data,{
+//       style: function(feature){
+//         return{
+//           color:"#ddddd",
+//           weight: 2,
+//           fillOpacity: .7,
+//           fillColor: "#cab2d6"
+//         };
+//       }
+//     }).addTo(map);
+// });
+// //load commission layer
+// $.getJSON("data/commission.geojson",function(data){
+//     var commissionLayer = L.geoJson(data,{
+//       style: function(feature){
+//         return{
+//           color:"#ddddd",
+//           weight: 2,
+//           fillOpacity: .7,
+//           fillColor: "#fdbf6f"
+//         };
+//       }
+//     }).addTo(map);
+// });
+// //load precincts layer
+// $.getJSON("data/precincts.geojson",function(data){
+//     var precinctLayer = L.geoJson(data,{
+//       style: function(feature){
+//         return{
+//           color:"#ddddd",
+//           weight: 2,
+//           fillOpacity: .7,
+//           fillColor: "a6cee3"
+//         };
+//       }
+//     }).addTo(map);
+// });
       </script>
 </body>
 
