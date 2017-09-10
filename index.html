@@ -5,11 +5,10 @@
   <title>ACC Voting Districts</title>
   <meta charset='utf-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
-
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
   <link href='https://api.mapbox.com/mapbox-assembly/v0.17.0/assembly.min.css' rel='stylesheet'>
   <script async defer src='https://api.mapbox.com/mapbox-assembly/v0.17.0/assembly.js'></script>
-  <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
-  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
 
 </head>
 
@@ -32,8 +31,23 @@
     <div class='col col--12 col--9-ml h180 h-full-ml'>
       <div id="map" class='viewport-twothirds viewport-full-ml'></div>
 
+      <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+      <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
+
+
       <script>
-        //javascript here
+      // MAKE AN AWESOME WEB MAP!
+      var map = L.map('map', {
+        center: [33.938718, -83.371200],
+        zoom: 11,
+    });
+
+      var tiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+          attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+          maxZoom: 16
+      }).addTo(map);
+
       </script>
 </body>
 
