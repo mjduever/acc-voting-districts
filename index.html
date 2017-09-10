@@ -17,8 +17,8 @@
     <div class='col col--12 col--3-ml px12 viewport-third viewport-full-ml'>
       <div class='h-full scroll-auto relative'>
         <h1 class='txt-h2 mb6'>Athens-Clarke County Voting Districts</h1>
-        <p>Find your voting district for local and statewide elections. Enter you address into the box to the left </p><br>
-        <p>This map shows precincts, commission districts, school board districts, congressional districts, and .</p>
+        <p>Find your voting district for local and statewide elections. Enter your address into the box to the left </p><br>
+        <p>This map shows precincts, commission districts, school board districts, congressional districts, and the state house districts.</p>
 
         <footer class='mt12 bg-gray-faint txt-s absolute w-full bottom px12'>
           <ul>
@@ -33,11 +33,15 @@
 
       <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
       <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
-
+      <script src ="data/precincts.geojson"></script>
+      <script src="data/commission.geojson"></script>
+      <script src="data/congress.geojson"></script>
+      <script src="data/house.geojson"></script>
+      <script src="data/schoolboard.geojson"></script>
 
 
       <script>
-      // MAKE AN AWESOME WEB MAP!
+
       var map = L.map('map', {
         center: [33.938718, -83.371200],
         zoom: 11.5,
@@ -49,7 +53,32 @@
           minZoom: 11
       }).addTo(map);
 
-    //load geojson
+  //load geojson
+$.getJSON("data/congress.geojson",function(data){
+    var congressLayer = L.geoJson(data,{
+      style: function(feature){
+        return{
+          color:"#ddddd",
+          weight: 1,
+          fillOpacity: .7,
+          fillColor: "green"
+        };
+      }
+    }).addTo(map);
+});
+//load house layer
+// $.getJSON("data/house.geojson",function(data){
+//     var houseLayer = L.geoJson(data,{
+//       style: function(feature){
+//         return{
+//           color:"#ddddd",
+//           weight: 1,
+//           fillOpacity: .7,
+//           fillColor: "orange"
+//         };
+//       }
+//     }).addTo(map);
+// });
 
       </script>
 </body>
