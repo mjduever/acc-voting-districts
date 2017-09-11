@@ -19,7 +19,7 @@
   <script src="data/schoolboard.geojson"></script>
 
   <style>
-  
+
   </style>
 
 </head>
@@ -59,7 +59,7 @@
       L.control.geocoder('mapzen-zeZY4Xt').addTo(map);
 
   //load geojson
-$.getJSON("data/congress.json",function(district){
+//$.getJSON("data/congress.json",function(district){
     var congressLayer = L.geoJson(district,{
       style: function(feature){
         return{
@@ -70,10 +70,10 @@ $.getJSON("data/congress.json",function(district){
         };
       }
     }).addTo(map);
-});
+//});
 // //load house layer
-$.getJSON("data/house.geojson",function(data){
-    var houseLayer = L.geoJson(data,{
+//$.getJSON("data/house.geojson",function(data){
+    var houseLayer = L.geoJson(district,{
       style: function(feature){
         return{
           color:"#ddddd",
@@ -83,10 +83,10 @@ $.getJSON("data/house.geojson",function(data){
         };
       }
     }).addTo(map);
-});
+//});
 //load schoolboard layer
-$.getJSON("data/schoolboard.geojson",function(data){
-    var schoolboardLayer = L.geoJson(data,{
+//$.getJSON("data/schoolboard.geojson",function(data){
+    var schoolboardLayer = L.geoJson(districts,{
       style: function(feature){
         return{
           color:"#ddddd",
@@ -96,10 +96,10 @@ $.getJSON("data/schoolboard.geojson",function(data){
         };
       }
     }).addTo(map);
-});
+//});
 //load commission layer
-$.getJSON("data/commission.geojson",function(data){
-    var commissionLayer = L.geoJson(data,{
+//$.getJSON("data/commission.geojson",function(data){
+    var commissionLayer = L.geoJson(commission,{
       style: function(feature){
         return{
           color:"#ddddd",
@@ -109,20 +109,20 @@ $.getJSON("data/commission.geojson",function(data){
         };
       }
     }).addTo(map);
-});
+//});
 //load precincts layer
-$.getJSON("data/precincts.geojson",function(precincts){
+//$.getJSON("data/precincts.geojson",function(precincts){
     var precinctLayer = L.geoJson(precincts,{
       style: function(feature){
         return{
           color:"#ddddd",
           weight: 2,
           fillOpacity: .7,
-          fillColor: "a6cee3"
+          fillColor: "#a6cee3"
         };
       }
     }).addTo(map);
-});
+//});
 // add layer control
 
 var baseMaps = {
