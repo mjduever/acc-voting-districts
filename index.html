@@ -5,18 +5,9 @@
   <title>ACC Voting Districts</title>
   <meta charset='utf-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
   <link href='https://api.mapbox.com/mapbox-assembly/v0.17.0/assembly.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
-  <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
-  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.js"></script>
-<script async defer src='https://api.mapbox.com/mapbox-assembly/v0.17.0/assembly.js'></script>
-  <script src ="data/precincts.geojson"></script>
-  <script src="data/commission.geojson"></script>
-  <script src="data/congress.geojson"></script>
-  <script src="data/house.geojson"></script>
-  <script src="data/schoolboard.geojson"></script>
 
   <style>
 
@@ -41,7 +32,13 @@
       </div>
     </div>
     <div class='col col--12 col--9-ml h180 h-full-ml'>
-      <div id="map" class='viewport-twothirds viewport-full-ml'></div>
+    <div id="map" class='viewport-twothirds viewport-full-ml'></div>
+
+
+    <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.js"></script>
+    <script async defer src='https://api.mapbox.com/mapbox-assembly/v0.17.0/assembly.js'></script>
 
     <script>
 
@@ -58,81 +55,83 @@
 // add geocoder
       L.control.geocoder('mapzen-zeZY4Xt').addTo(map);
 
-  //load geojson
-//$.getJSON("data/congress.json",function(district){
-    var congressLayer = L.geoJson(district,{
-      style: function(feature){
-        return{
-          color:"#ddddd",
-          weight: 2,
-          fillOpacity: .7,
-          fillColor: "#33a02c"
-        };
-      }
-    }).addTo(map);
-//});
-// //load house layer
-//$.getJSON("data/house.geojson",function(data){
-    var houseLayer = L.geoJson(district,{
-      style: function(feature){
-        return{
-          color:"#ddddd",
-          weight: 2,
-          fillOpacity: .7,
-          fillColor: "#b2df8a"
-        };
-      }
-    }).addTo(map);
-//});
-//load schoolboard layer
-//$.getJSON("data/schoolboard.geojson",function(data){
-    var schoolboardLayer = L.geoJson(districts,{
-      style: function(feature){
-        return{
-          color:"#ddddd",
-          weight: 2,
-          fillOpacity: .7,
-          fillColor: "#cab2d6"
-        };
-      }
-    }).addTo(map);
-//});
-//load commission layer
-//$.getJSON("data/commission.geojson",function(data){
-    var commissionLayer = L.geoJson(commission,{
-      style: function(feature){
-        return{
-          color:"#ddddd",
-          weight: 2,
-          fillOpacity: .7,
-          fillColor: "#fdbf6f"
-        };
-      }
-    }).addTo(map);
-//});
-//load precincts layer
-//$.getJSON("data/precincts.geojson",function(precincts){
-    var precinctLayer = L.geoJson(precincts,{
-      style: function(feature){
-        return{
-          color:"#ddddd",
-          weight: 2,
-          fillOpacity: .7,
-          fillColor: "#a6cee3"
-        };
-      }
-    }).addTo(map);
-//});
-// add layer control
 
-var baseMaps = {
-    "Precincts": precinctLayer,
-    "Commission Districts": commissionLayer,
-    "School Board Districts": schoolboardLayer,
-    "State House Districts": houseLayer,
-    "Congressional Districts": congressLayer
-};
-  L.control.layers(baseMaps).addTo(map);
+    $.when(
+      $.getJSON('data/precincts.json'),
+      $.getJSON('data/commission.json'),
+      $.getJSON('data/congress.json'),
+      $.getJSON('data/house.json'),
+      $.getJSON('data/schoolboard.json')
+    ).done(function(precincts, commission, congress, house, schoolboard){
+        // can access data like this:
+        console.log(precincts[0]);
+        
+        var congressLayer = L.geoJson(congress[0],{
+          style: function(feature){
+            return{
+              color:"#ddddd",
+              weight: 2,
+              fillOpacity: .7,
+              fillColor: "#33a02c"
+            };
+          }
+        }).addTo(map);
+
+        var houseLayer = L.geoJson(house[0],{
+          style: function(feature){
+            return{
+              color:"#ddddd",
+              weight: 2,
+              fillOpacity: .7,
+              fillColor: "#b2df8a"
+            };
+          }
+        }).addTo(map);
+
+        var schoolboardLayer = L.geoJson(schoolboard[0],{
+          style: function(feature){
+            return{
+              color:"#ddddd",
+              weight: 2,
+              fillOpacity: .7,
+              fillColor: "#cab2d6"
+            };
+          }
+        }).addTo(map);
+
+        var commissionLayer = L.geoJson(commission[0],{
+          style: function(feature){
+            return{
+              color:"#ddddd",
+              weight: 2,
+              fillOpacity: .7,
+              fillColor: "#fdbf6f"
+            };
+          }
+        }).addTo(map);
+
+        var precinctLayer = L.geoJson(precincts[0],{
+          style: function(feature){
+            return{
+              color:"#ddddd",
+              weight: 2,
+              fillOpacity: .7,
+              fillColor: "#a6cee3"
+            };
+          }
+        }).addTo(map);
+
+
+      var baseMaps = {
+          "Precincts": precinctLayer,
+          "Commission Districts": commissionLayer,
+          "School Board Districts": schoolboardLayer,
+          "State House Districts": houseLayer,
+          "Congressional Districts": congressLayer
+      };
+      L.control.layers(baseMaps).addTo(map);
+
+}); // end done loading data
 
 </script>
 
