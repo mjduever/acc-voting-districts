@@ -25,7 +25,7 @@
 
         <footer class='mt12 bg-gray-faint txt-s absolute w-full bottom px12'>
           <ul>
-            <li>Explore the raw <a class='link' href='http://athensclarkecounty.com/248/Current-District-Maps'>data</a></li>
+            <li>Explore the original <a class='link' href='http://athensclarkecounty.com/248/Current-District-Maps'>maps</a></li>
             <li>Map authored by <a class='link' href='#'>M. Duever</a></li>
             </p>
         </footer>
@@ -65,7 +65,7 @@
     ).done(function(precincts, commission, congress, house, schoolboard){
         // can access data like this:
         console.log(precincts[0]);
-        
+
         var congressLayer = L.geoJson(congress[0],{
           style: function(feature){
             return{
