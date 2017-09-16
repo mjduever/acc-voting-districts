@@ -54,7 +54,8 @@
       }).addTo(map);
 // add geocoder
       L.control.geocoder('mapzen-zeZY4Xt').addTo(map);
-
+      //call info panel
+      		drawInfo();
 //asynchronous loading of the data, multiple layers
     $.when(
       $.getJSON('data/precincts.json'),
@@ -157,9 +158,24 @@
           "State House Districts": houseLayer,
           "Congressional Districts": congressLayer
       };
-      L.control.layers(baseMaps).addTo(map);
+      var layersControl = new L.Control.Layers(baseMaps, null, {collapsed: false}); 
+      map.addControl(layersControl);
 
 }); // end done loading data
+
+function drawInfo() {
+			var info = L.control({
+				position: 'bottomleft'
+			});
+			info.onAdd = function(map) {
+				var div = L.DomUtil.create('div', 'info');
+				return div;
+			}
+			info.addTo(map);
+			$(".info").hide(); //hides info panel when nothing is mousedover
+		} //end drawinfo
+
+
 
 </script>
 
