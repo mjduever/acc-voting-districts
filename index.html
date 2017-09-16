@@ -68,56 +68,84 @@
 
         var congressLayer = L.geoJson(congress[0],{
           style: function(feature){
-            return{
-              color:"#ddddd",
-              weight: 2,
-              fillOpacity: .7,
-              fillColor: "#33a02c"
-            };
+            switch (feature.properties.DISTRICT){
+              case '009': return{color:"#66c2a5"};
+              case '010': return{color: "#fc8d62"};
+            }
           }
         }).addTo(map);
 
         var houseLayer = L.geoJson(house[0],{
           style: function(feature){
-            return{
-              color:"#ddddd",
-              weight: 2,
-              fillOpacity: .7,
-              fillColor: "#b2df8a"
-            };
+            switch (feature.properties.DISTRICT){
+              case '117': return{color:"#66c2a5"};
+              case '118': return{color: "#fc8d62"};
+              case '119' : return{color: "#8da0cb"};
+            }
           }
         }).addTo(map);
 
         var schoolboardLayer = L.geoJson(schoolboard[0],{
           style: function(feature){
-            return{
-              color:"#ddddd",
-              weight: 2,
-              fillOpacity: .7,
-              fillColor: "#cab2d6"
-            };
+            switch (feature.properties.DISTRICT){
+              case '001': return{color: "#a6cee3"};
+              case '002': return{color: "#1f78b4"};
+              case '003': return{color: "#b2df8a"};
+              case '004': return{color: "#33a02c"};
+              case '005': return{color: "#fb9a99"};
+              case '006': return{color: "#e31a1c"};
+              case '007': return{color: "#fdbf6f"};
+              case '008': return{color: "#ff7f00"};
+              case '009': return{color: "#cab2d6"};
+            }
           }
         }).addTo(map);
 
         var commissionLayer = L.geoJson(commission[0],{
           style: function(feature){
-            return{
-              color:"#ddddd",
-              weight: 2,
-              fillOpacity: .7,
-              fillColor: "#fdbf6f"
-            };
+            switch (feature.properties.DISTRICT){
+              case '001': return{color: "#a6cee3"};
+              case '002': return{color: "#1f78b4"};
+              case '003': return{color: "#b2df8a"};
+              case '004': return{color: "#33a02c"};
+              case '005': return{color: "#fb9a99"};
+              case '006': return{color: "#e31a1c"};
+              case '007': return{color: "#fdbf6f"};
+              case '008': return{color: "#ff7f00"};
+              case '009': return{color: "#cab2d6"};
+              case '010': return{color: "#6a3d9a"};
+            }
           }
         }).addTo(map);
 
         var precinctLayer = L.geoJson(precincts[0],{
           style: function(feature){
-            return{
-              color:"#ddddd",
-              weight: 2,
-              fillOpacity: .7,
-              fillColor: "#a6cee3"
-            };
+            switch (feature.properties.PRECINCT_N){
+              case '1A': return{color: "#b2e2e2"};
+              case '1B': return{color: "#66c2a4"};
+              case '1C': return{color: "#238b45"};
+              case '1D': return{color: "#006d2c"};
+              case '2A': return{color: "#8c96c6"};
+              case '2B': return{color: "#8856a7"};
+              case '3A': return{color: "#df65b0"};
+              case '3B': return{color: "#df65b0"};
+              case '4A': return{color: "#67a9cf"};
+              case '4B': return{color: "#1c9099"};
+              case '5A': return{color: "#fdcc8a"};
+              case '5B': return{color: "#fc8d59"};
+              case '5C': return{color: "#d7301f"};
+              case '5D': return{color: "#b30000"};
+              case '6A': return{color: "#bdc9e1"};
+              case '6B': return{color: "#74a9cf"};
+              case '6C': return{color: "#0570b0"};
+              case '6D': return{color: "#045a8d"};
+              case '7A': return{color: "#edf8b1"};
+              case '7B': return{color: "#7fcdbb"};
+              case '7C': return{color: "#2c7fb8"};
+              case '8A': return{color: "#fff7bc"};
+              case '8B': return{color: "#fec44f"};
+              case '8C': return{color: "#d95f0e"};
+            }
           }
         }).addTo(map);
 
