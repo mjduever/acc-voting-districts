@@ -41,12 +41,12 @@
     <script async defer src='https://api.mapbox.com/mapbox-assembly/v0.17.0/assembly.js'></script>
 
     <script>
-
+//create map
       var map = L.map('map', {
-        center: [33.938718, -83.371200],
-        zoom: 11.5,
+        center: [33.938718, -83.371200], //center map
+        zoom: 11.5, //initial zoom level
     });
-
+//add map tile layer, something with streets
       var tiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
           attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
           maxZoom: 16,
@@ -55,7 +55,7 @@
 // add geocoder
       L.control.geocoder('mapzen-zeZY4Xt').addTo(map);
 
-
+//asynchronous loading of the data, multiple layers
     $.when(
       $.getJSON('data/precincts.json'),
       $.getJSON('data/commission.json'),
@@ -149,7 +149,7 @@
           }
         }).addTo(map);
 
-
+// create layer control
       var baseMaps = {
           "Precincts": precinctLayer,
           "Commission Districts": commissionLayer,
