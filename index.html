@@ -89,6 +89,9 @@
               case '009': return{color:"#66c2a5"};
               case '010': return{color: "#fc8d62"};
             }
+          },
+          onEachFeature: function(feature, layer){
+            layer.bindTooltip(feature.properties.DISTRICT);
           }
         }).addTo(map);
 
@@ -99,6 +102,9 @@
               case '118': return{color: "#fc8d62"};
               case '119' : return{color: "#8da0cb"};
             }
+          },
+          onEachFeature: function(feature, layer){
+            layer.bindTooltip(feature.properties.DISTRICT);
           }
         }).addTo(map);
 
@@ -115,6 +121,9 @@
               case '008': return{color: "#ff7f00"};
               case '009': return{color: "#cab2d6"};
             }
+          },
+          onEachFeature: function(feature, layer){
+            layer.bindTooltip(feature.properties.DISTRICT);
           }
         }).addTo(map);
 
@@ -132,12 +141,15 @@
               case '009': return{color: "#cab2d6"};
               case '010': return{color: "#6a3d9a"};
             }
+          },
+          onEachFeature: function(feature, layer){
+            layer.bindTooltip(feature.properties.DISTRICT);
           }
         }).addTo(map);
 
         var precinctLayer = L.geoJson(precincts[0],{
           style: function(feature){
-            switch (feature.properties.PRECINCT_N){
+            switch (feature.properties.PRECINCT_I){
               case '1A': return{color: "#b2e2e2"};
               case '1B': return{color: "#66c2a4"};
               case '1C': return{color: "#238b45"};
@@ -145,7 +157,7 @@
               case '2A': return{color: "#8c96c6"};
               case '2B': return{color: "#8856a7"};
               case '3A': return{color: "#df65b0"};
-              case '3B': return{color: "#df65b0"};
+              case '3B': return{color: "#dd1c77"};
               case '4A': return{color: "#67a9cf"};
               case '4B': return{color: "#1c9099"};
               case '5A': return{color: "#fdcc8a"};
@@ -163,6 +175,9 @@
               case '8B': return{color: "#fec44f"};
               case '8C': return{color: "#d95f0e"};
             }
+          },
+          onEachFeature: function(feature, layer){
+            layer.bindTooltip(feature.properties.PRECINCT_I);
           }
         }).addTo(map);
 
@@ -177,33 +192,33 @@
       var layersControl = new L.Control.Layers(baseMaps, null, {collapsed: false});
       map.addControl(layersControl);
       //call info panel
-      drawInfo();
-      updateInfo(baseMaps);
+//      drawInfo();
+//       updateInfo(baseMaps);
 }); // end done loading data
 
-function drawInfo() {
-			var info = L.control({
-				position: 'bottomleft'
-			});
-			info.onAdd = function(map) {
-				var div = L.DomUtil.create('div', 'info');
-				return div;
-			}
-			info.addTo(map);
-			$(".info").hide(); //hides info panel when nothing is mousedover
-		} //end drawinfo
+// function drawInfo() {
+// 			var info = L.control({
+// 				position: 'bottomleft'
+// 			});
+// 			info.onAdd = function(map) {
+// 				var div = L.DomUtil.create('div', 'info');
+// 				return div;
+// 			}
+// 			info.addTo(map);
+// 			$(".info").hide(); //hides info panel when nothing is mousedover
+// 		} //end drawinfo
 
     //update info pane about districts on mouse click
-    		function updateInfo(layer) {
-    			var props = layer.feature.properties;
-    			var html = "<h3>" + "Voting Districts</h3>" +
-    				"Precinct: <b>" + props["PRECINCT_N"] + "</b><br>" +
-    				"Commission District: <b>" + props["DISTRICT"] + "</b><br>" +
-    				"School Board District: <b>" + props["DISTRICT"] + "</b><br>" +
-    				"House District: <b>" + props["DISTRICT"] + "</b>" +
-            "Congressional District: <b>" + props["DISTRICT"] + "</b>"
-    			$(".info").html(html);
-    		} //end updateInfo(layer)
+//     		function updateInfo(baseMaps) {
+// //    			var props = layer.feature.properties;
+//     			var html = "<h3>" + "Voting Districts</h3>" +
+//     				"Precinct: <b>" + precinctLayerlayer.feature.properties["PRECINCT_I"] + "</b><br>" +
+//     				"Commission District: <b>" + commissionLayer.feature.properties["DISTRICT"] + "</b><br>" +
+//     				"School Board District: <b>" + schoolboardLayer.feature.properties["DISTRICT"] + "</b><br>" +
+//     				"House District: <b>" + houseLayer.feature.properties["DISTRICT"] + "</b>" +
+//             "Congressional District: <b>" + congressLayer.feature.properties["DISTRICT"] + "</b>"
+//     			$(".info").html(html);
+    	//	} //end updateInfo(layer)
 
 </script>
 
