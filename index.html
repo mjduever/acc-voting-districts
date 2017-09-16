@@ -10,7 +10,17 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
 
   <style>
-
+  .info {
+  			padding: 6px 8px;
+  			font-size: 1em;
+  			background: rgba(255, 255, 255, 0.8);
+  			box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  			border-radius: 5px;
+  			text-align: right;
+  		}
+  		.info h3 {
+  			margin: 0;
+  		}
   </style>
 
 </head>
@@ -20,12 +30,13 @@
     <div class='col col--12 col--3-ml px12 viewport-third viewport-full-ml'>
       <div class='h-full scroll-auto relative'>
         <h1 class='txt-h2 mb6'>Athens-Clarke County Voting Districts</h1>
-        <p>Find your voting district for local and statewide elections. Enter your address into the box to the left </p><br>
+        <p>Find your voting district for local and statewide elections. Enter your address by clicking on the magnifying glass on the left.</p><br>
         <p>This map shows precincts, commission districts, school board districts, congressional districts, and the state house districts.</p>
 
         <footer class='mt12 bg-gray-faint txt-s absolute w-full bottom px12'>
           <ul>
-            <li>Explore the original <a class='link' href='http://athensclarkecounty.com/248/Current-District-Maps'>maps</a></li>
+            <li>See the original <a class='link' href='http://athensclarkecounty.com/248/Current-District-Maps'>maps</a></li>
+            <li>Explore the original <a class='link' href='http://www.legis.ga.gov/Joint/reapportionment/en-US/default.aspx'>data</a></li>
             <li>Map authored by <a class='link' href='#'>M. Duever</a></li>
             </p>
         </footer>
@@ -41,10 +52,11 @@
     <script async defer src='https://api.mapbox.com/mapbox-assembly/v0.17.0/assembly.js'></script>
 
     <script>
+    
 //create map
       var map = L.map('map', {
         center: [33.938718, -83.371200], //center map
-        zoom: 11.5, //initial zoom level
+        zoom: 11.5 //initial zoom level
     });
 //add map tile layer, something with streets
       var tiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
@@ -54,8 +66,7 @@
       }).addTo(map);
 // add geocoder
       L.control.geocoder('mapzen-zeZY4Xt').addTo(map);
-      //call info panel
-      		drawInfo();
+
 //asynchronous loading of the data, multiple layers
     $.when(
       $.getJSON('data/precincts.json'),
@@ -158,9 +169,11 @@
           "State House Districts": houseLayer,
           "Congressional Districts": congressLayer
       };
-      var layersControl = new L.Control.Layers(baseMaps, null, {collapsed: false}); 
+      var layersControl = new L.Control.Layers(baseMaps, null, {collapsed: false});
       map.addControl(layersControl);
-
+      //call info panel
+      drawInfo();
+      updateInfo(baseMaps);
 }); // end done loading data
 
 function drawInfo() {
@@ -175,7 +188,17 @@ function drawInfo() {
 			$(".info").hide(); //hides info panel when nothing is mousedover
 		} //end drawinfo
 
-
+    //update info pane about districts on mouse click
+    		function updateInfo(layer) {
+    			var props = layer.feature.properties;
+    			var html = "<h3>" + "Voting Districts</h3>" +
+    				"Precinct: <b>" + props["PRECINCT_N"] + "</b><br>" +
+    				"Commission District: <b>" + props["DISTRICT"] + "</b><br>" +
+    				"School Board District: <b>" + props["DISTRICT"] + "</b><br>" +
+    				"House District: <b>" + props["DISTRICT"] + "</b>" +
+            "Congressional District: <b>" + props["DISTRICT"] + "</b>"
+    			$(".info").html(html);
+    		} //end updateInfo(layer)
 
 </script>
 
