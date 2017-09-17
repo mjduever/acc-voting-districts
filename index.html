@@ -71,7 +71,7 @@
         position: 'topleft',
         expanded: true
       };
-      
+
       var geocoder = L.control.geocoder('mapzen-zeZY4Xt', options).addTo(map);
 
 
@@ -194,7 +194,7 @@
       var layersControl = new L.Control.Layers(baseMaps, null, {collapsed: false});
       map.addControl(layersControl);
 
-      // listen for 
+      // listen for
       geocoder.on('select', function(result) {
         // store lat long of result
         var latlng = [result.latlng.lng, result.latlng.lat];
@@ -204,17 +204,12 @@
 
         // loop through layers of featuregroup
         precinctLayer.eachLayer(function(layer) {
-          
+
           // convert Leaflet layer to geojson
           var poly = layer.toGeoJSON();
-      
+
           // if the point is inside the polygon
           if(turf.inside(point, poly)) {
-            
-            // we have access to the polygon here
-            console.log(poly)
-
-          } 
 
 
 
@@ -226,11 +221,9 @@
       })
 
 
-
-
-      //call info panel
-//      drawInfo();
-//       updateInfo(baseMaps);
+//      call info panel
+    //  drawInfo();
+    //   updateInfo(baseMaps);
 }); // end done loading data
 
 function drawInfo() {
