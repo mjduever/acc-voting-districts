@@ -50,6 +50,7 @@
     <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.js"></script>
     <script async defer src='https://api.mapbox.com/mapbox-assembly/v0.17.0/assembly.js'></script>
+    <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
 
     <script>
 
@@ -70,7 +71,9 @@
         position: 'topleft',
         expanded: true
       };
-      L.control.geocoder('mapzen-zeZY4Xt', options).addTo(map);
+      
+      var geocoder = L.control.geocoder('mapzen-zeZY4Xt', options).addTo(map);
+
 
 //asynchronous loading of the data, multiple layers
     $.when(
@@ -81,7 +84,6 @@
       $.getJSON('data/schoolboard.json')
     ).done(function(precincts, commission, congress, house, schoolboard){
         // can access data like this:
-        console.log(precincts[0]);
 
         var congressLayer = L.geoJson(congress[0],{
           style: function(feature){
@@ -191,34 +193,71 @@
       };
       var layersControl = new L.Control.Layers(baseMaps, null, {collapsed: false});
       map.addControl(layersControl);
+
+      // listen for 
+      geocoder.on('select', function(result) {
+        // store lat long of result
+        var latlng = [result.latlng.lng, result.latlng.lat];
+
+        // create a geojson feature point
+        var point = turf.point(latlng);
+
+        // loop through layers of featuregroup
+        precinctLayer.eachLayer(function(layer) {
+          
+          // convert Leaflet layer to geojson
+          var poly = layer.toGeoJSON();
+      
+          // if the point is inside the polygon
+          if(turf.inside(point, poly)) {
+            
+            // we have access to the polygon here
+            console.log(poly)
+
+          } 
+
+
+
+        })
+
+
+
+
+      })
+
+
+
+
       //call info panel
 //      drawInfo();
 //       updateInfo(baseMaps);
 }); // end done loading data
 
-// function drawInfo() {
-// 			var info = L.control({
-// 				position: 'bottomleft'
-// 			});
-// 			info.onAdd = function(map) {
-// 				var div = L.DomUtil.create('div', 'info');
-// 				return div;
-// 			}
-// 			info.addTo(map);
-// 			$(".info").hide(); //hides info panel when nothing is mousedover
-// 		} //end drawinfo
+function drawInfo() {
+			var info = L.control({
+				position: 'bottomleft'
+			});
+			info.onAdd = function(map) {
+				var div = L.DomUtil.create('div', 'info');
+				return div;
+			}
+			info.addTo(map);
+			$(".info").hide(); //hides info panel when nothing is mousedover
+		} //end drawinfo
 
-    //update info pane about districts on mouse click
-//     		function updateInfo(baseMaps) {
-// //    			var props = layer.feature.properties;
-//     			var html = "<h3>" + "Voting Districts</h3>" +
-//     				"Precinct: <b>" + precinctLayerlayer.feature.properties["PRECINCT_I"] + "</b><br>" +
-//     				"Commission District: <b>" + commissionLayer.feature.properties["DISTRICT"] + "</b><br>" +
-//     				"School Board District: <b>" + schoolboardLayer.feature.properties["DISTRICT"] + "</b><br>" +
-//     				"House District: <b>" + houseLayer.feature.properties["DISTRICT"] + "</b>" +
-//             "Congressional District: <b>" + congressLayer.feature.properties["DISTRICT"] + "</b>"
-//     			$(".info").html(html);
-    	//	} //end updateInfo(layer)
+    // update info pane about districts on mouse click
+    function updateInfo(baseMaps) {
+//    			var props = layer.feature.properties;
+      var html = "<h3>" + "Voting Districts</h3>" +
+        "Precinct: <b>" + precinctLayerlayer.feature.properties["PRECINCT_I"] + "</b><br>" +
+        "Commission District: <b>" + commissionLayer.feature.properties["DISTRICT"] + "</b><br>" +
+        "School Board District: <b>" + schoolboardLayer.feature.properties["DISTRICT"] + "</b><br>" +
+        "House District: <b>" + houseLayer.feature.properties["DISTRICT"] + "</b>" +
+        "Congressional District: <b>" + congressLayer.feature.properties["DISTRICT"] + "</b>"
+      $(".info").html(html);
+    } //end updateInfo(layer)
+
+
 
 </script>
 
