@@ -211,13 +211,25 @@
           // if the point is inside the polygon
           if(turf.inside(point, poly)) {
 
-
+            // we have access to the polygon here
+            console.log(poly);
+            return // ?
+          }
 
         })
-
-
-
-
+        // // loop through layers of featuregroup
+        // commissionLayertLayer.eachLayer(function(layer) {
+        //
+        //   // convert Leaflet layer to geojson
+        //   var poly = layer.toGeoJSON();
+        //
+        //   // if the point is inside the polygon
+        //   if(turf.inside(point, poly)) {
+        //
+        //     // we have access to the polygon here
+        //     console.log(poly);
+        // return
+        //   }
       })
 
 
