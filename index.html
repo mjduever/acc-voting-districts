@@ -218,7 +218,8 @@
 
             // we have access to the polygon here
             console.log(poly);
-            return // ?
+
+          // ?
           }
 
         })
@@ -239,8 +240,8 @@
 
 
 //      call info panel
-    //  drawInfo();
-    //   updateInfo(baseMaps);
+     drawInfo();
+//      updateInfo(precinctLayer, commissionLayer, schoolboardLayer, houseLayer, congressLayer);
 }); // end done loading data
 
 function drawInfo() {
@@ -256,10 +257,10 @@ function drawInfo() {
 		} //end drawinfo
 
     // update info pane about districts on mouse click
-    function updateInfo(baseMaps) {
+    function updateInfo(precinctLayer, commissionLayer, schoolboardLayer, houseLayer, congressLayer) {
 //    			var props = layer.feature.properties;
       var html = "<h3>" + "Voting Districts</h3>" +
-        "Precinct: <b>" + precinctLayerlayer.feature.properties["PRECINCT_I"] + "</b><br>" +
+        "Precinct: <b>" + precinctLayer.feature.properties["PRECINCT_I"] + "</b><br>" +
         "Commission District: <b>" + commissionLayer.feature.properties["DISTRICT"] + "</b><br>" +
         "School Board District: <b>" + schoolboardLayer.feature.properties["DISTRICT"] + "</b><br>" +
         "House District: <b>" + houseLayer.feature.properties["DISTRICT"] + "</b>" +
