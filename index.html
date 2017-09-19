@@ -226,29 +226,68 @@
           if(turf.inside(point, poly)) {
 
             // we have access to the polygon here
-  
-            precinct = poly.properties.PRECINCT_I;
 
-          // ?
+            precinct = poly.properties.PRECINCT_I;
           }
 
         })
         // loop through layers of featuregroup
         commissionLayer.eachLayer(function(layer) {
-        
+
           // convert Leaflet layer to geojson
           var poly = layer.toGeoJSON();
-        
+
           // if the point is inside the polygon
           if(turf.inside(point, poly)) {
-        
+
             // we have access to the polygon here
             commission = poly.properties.DISTRICT;
 
           }
       })
+      // loop through layers of featuregroup
+        schoolboardLayer.eachLayer(function(layer) {
 
-      updateInfo(precinct, commission)
+        // convert Leaflet layer to geojson
+        var poly = layer.toGeoJSON();
+
+        // if the point is inside the polygon
+        if(turf.inside(point, poly)) {
+
+          // we have access to the polygon here
+          schoolBoard = poly.properties.DISTRICT;
+
+        }
+    })
+    // loop through layers of featuregroup
+      houseLayer.eachLayer(function(layer) {
+
+      // convert Leaflet layer to geojson
+      var poly = layer.toGeoJSON();
+
+      // if the point is inside the polygon
+      if(turf.inside(point, poly)) {
+
+        // we have access to the polygon here
+        house = poly.properties.DISTRICT;
+
+      }
+  })
+  // loop through layers of featuregroup
+    congressLayer.eachLayer(function(layer) {
+
+    // convert Leaflet layer to geojson
+    var poly = layer.toGeoJSON();
+
+    // if the point is inside the polygon
+    if(turf.inside(point, poly)) {
+
+      // we have access to the polygon here
+      congressional = poly.properties.DISTRICT;
+
+    }
+})
+      updateInfo(precinct, commission, schoolBoard, house, congressional)
 
     }); // end geocoder callback
 
@@ -273,14 +312,14 @@
     // update info pane about districts on mouse click
     function updateInfo(precinct, commission, schoolBoard, house, congressional) {
 
-      console.log(precinct, commission)
+      console.log(precinct, commission, schoolBoard, house, congressional)
 
       var html = "<h3>" + "Voting Districts</h3>" +
         "Precinct: <b>" + precinct + "</b><br>" +
-        "Commission District: <b>" + commission + "</b><br>";
-        // "School Board District: <b>" + schoolBoard + "</b><br>" +
-        // "House District: <b>" + house + "</b>" +
-        // "Congressional District: <b>" + congressional + "</b>"
+        "Commission District: <b>" + commission + "</b><br>"; +
+        "School Board District: <b>" + schoolBoard + "</b><br>" +
+        "House District: <b>" + house + "</b>" +
+        "Congressional District: <b>" + congressional + "</b>"
       console.log(html);
       $(".info").html(html);
       $(".info").show();
