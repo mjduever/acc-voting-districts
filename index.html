@@ -57,7 +57,8 @@
 //create map
       var map = L.map('map', {
         center: [33.938718, -83.371200], //center map
-        zoom: 11.5 //initial zoom level
+        zoom: 11.5, //initial zoom level,
+        zoomControl: false
     });
 //add map tile layer, something with streets
       var tiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
@@ -74,6 +75,12 @@
 
       var geocoder = L.control.geocoder('mapzen-zeZY4Xt', options).addTo(map);
 
+      //add zoom control with your options
+      L.control.zoom({
+          position:'topleft'
+      }).addTo(map);
+
+      drawInfo();
 
 //asynchronous loading of the data, multiple layers
     $.when(
@@ -96,7 +103,7 @@
             var tooltipInfo = "Congressional District: "+ feature.properties.DISTRICT
             layer.bindTooltip(tooltipInfo);
           }
-        }).addTo(map);
+        });
 
         var houseLayer = L.geoJson(house[0],{
           style: function(feature){
@@ -110,7 +117,7 @@
             var tooltipInfo = "House District: "+ feature.properties.DISTRICT
             layer.bindTooltip(tooltipInfo);
           }
-        }).addTo(map);
+        });
 
         var schoolboardLayer = L.geoJson(schoolboard[0],{
           style: function(feature){
@@ -130,7 +137,7 @@
             var tooltipInfo = "School Board District: "+ feature.properties.DISTRICT
             layer.bindTooltip(tooltipInfo);
           }
-        }).addTo(map);
+        });
 
         var commissionLayer = L.geoJson(commission[0],{
           style: function(feature){
@@ -151,7 +158,7 @@
             var tooltipInfo = "Commission District: "+ feature.properties.DISTRICT
             layer.bindTooltip(tooltipInfo);
           }
-        }).addTo(map);
+        });
 
         var precinctLayer = L.geoJson(precincts[0],{
           style: function(feature){
@@ -204,6 +211,8 @@
         // store lat long of result
         var latlng = [result.latlng.lng, result.latlng.lat];
 
+        var precinct, commission, schoolBoard, house, congressional;
+
         // create a geojson feature point
         var point = turf.point(latlng);
 
@@ -217,34 +226,39 @@
           if(turf.inside(point, poly)) {
 
             // we have access to the polygon here
-            console.log(poly);
+  
+            precinct = poly.properties.PRECINCT_I;
 
           // ?
           }
 
         })
-        // // loop through layers of featuregroup
-        // commissionLayertLayer.eachLayer(function(layer) {
-        //
-        //   // convert Leaflet layer to geojson
-        //   var poly = layer.toGeoJSON();
-        //
-        //   // if the point is inside the polygon
-        //   if(turf.inside(point, poly)) {
-        //
-        //     // we have access to the polygon here
-        //     console.log(poly);
-        // return
-        //   }
+        // loop through layers of featuregroup
+        commissionLayer.eachLayer(function(layer) {
+        
+          // convert Leaflet layer to geojson
+          var poly = layer.toGeoJSON();
+        
+          // if the point is inside the polygon
+          if(turf.inside(point, poly)) {
+        
+            // we have access to the polygon here
+            commission = poly.properties.DISTRICT;
+
+          }
       })
+
+      updateInfo(precinct, commission)
+
+    }); // end geocoder callback
 
 
 //      call info panel
-     drawInfo();
+    //  drawInfo();
 //      updateInfo(precinctLayer, commissionLayer, schoolboardLayer, houseLayer, congressLayer);
 }); // end done loading data
 
-function drawInfo() {
+    function drawInfo() {
 			var info = L.control({
 				position: 'bottomleft'
 			});
@@ -257,15 +271,19 @@ function drawInfo() {
 		} //end drawinfo
 
     // update info pane about districts on mouse click
-    function updateInfo(precinctLayer, commissionLayer, schoolboardLayer, houseLayer, congressLayer) {
-//    			var props = layer.feature.properties;
+    function updateInfo(precinct, commission, schoolBoard, house, congressional) {
+
+      console.log(precinct, commission)
+
       var html = "<h3>" + "Voting Districts</h3>" +
-        "Precinct: <b>" + precinctLayer.feature.properties["PRECINCT_I"] + "</b><br>" +
-        "Commission District: <b>" + commissionLayer.feature.properties["DISTRICT"] + "</b><br>" +
-        "School Board District: <b>" + schoolboardLayer.feature.properties["DISTRICT"] + "</b><br>" +
-        "House District: <b>" + houseLayer.feature.properties["DISTRICT"] + "</b>" +
-        "Congressional District: <b>" + congressLayer.feature.properties["DISTRICT"] + "</b>"
+        "Precinct: <b>" + precinct + "</b><br>" +
+        "Commission District: <b>" + commission + "</b><br>";
+        // "School Board District: <b>" + schoolBoard + "</b><br>" +
+        // "House District: <b>" + house + "</b>" +
+        // "Congressional District: <b>" + congressional + "</b>"
+      console.log(html);
       $(".info").html(html);
+      $(".info").show();
     } //end updateInfo(layer)
 
 
