@@ -57,7 +57,8 @@
 //create map
       var map = L.map('map', {
         center: [33.938718, -83.371200], //center map
-        zoom: 11.5 //initial zoom level
+        zoom: 11.5, //initial zoom level,
+        zoomControl: false
     });
 //add map tile layer, something with streets
       var tiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
@@ -73,6 +74,11 @@
       };
 
       var geocoder = L.control.geocoder('mapzen-zeZY4Xt', options).addTo(map);
+
+      //add zoom control with your options
+      L.control.zoom({
+          position:'topleft'
+      }).addTo(map);
 
       drawInfo();
 
@@ -97,7 +103,7 @@
             var tooltipInfo = "Congressional District: "+ feature.properties.DISTRICT
             layer.bindTooltip(tooltipInfo);
           }
-        }).addTo(map);
+        });
 
         var houseLayer = L.geoJson(house[0],{
           style: function(feature){
@@ -111,7 +117,7 @@
             var tooltipInfo = "House District: "+ feature.properties.DISTRICT
             layer.bindTooltip(tooltipInfo);
           }
-        }).addTo(map);
+        });
 
         var schoolboardLayer = L.geoJson(schoolboard[0],{
           style: function(feature){
@@ -131,7 +137,7 @@
             var tooltipInfo = "School Board District: "+ feature.properties.DISTRICT
             layer.bindTooltip(tooltipInfo);
           }
-        }).addTo(map);
+        });
 
         var commissionLayer = L.geoJson(commission[0],{
           style: function(feature){
@@ -152,7 +158,7 @@
             var tooltipInfo = "Commission District: "+ feature.properties.DISTRICT
             layer.bindTooltip(tooltipInfo);
           }
-        }).addTo(map);
+        });
 
         var precinctLayer = L.geoJson(precincts[0],{
           style: function(feature){
