@@ -104,7 +104,9 @@
           },
           onEachFeature: function(feature, layer){
             var tooltipInfo = "Congressional District: "+ feature.properties.DISTRICT
-            layer.bindTooltip(tooltipInfo);
+            layer.bindTooltip(tooltipInfo,{
+              sticky: true //sticky: true has tooltip follow mouse
+            });
           }
         });
 
@@ -118,7 +120,9 @@
           },
           onEachFeature: function(feature, layer){
             var tooltipInfo = "House District: "+ feature.properties.DISTRICT
-            layer.bindTooltip(tooltipInfo);
+            layer.bindTooltip(tooltipInfo,{
+              sticky: true
+            });
           }
         });
 
@@ -138,7 +142,9 @@
           },
           onEachFeature: function(feature, layer){
             var tooltipInfo = "School Board District: "+ feature.properties.DISTRICT
-            layer.bindTooltip(tooltipInfo);
+            layer.bindTooltip(tooltipInfo,{
+              sticky: true
+            });
           }
         });
 
@@ -159,7 +165,9 @@
           },
           onEachFeature: function(feature, layer){
             var tooltipInfo = "Commission District: "+ feature.properties.DISTRICT
-            layer.bindTooltip(tooltipInfo);
+            layer.bindTooltip(tooltipInfo, {
+              sticky: true
+            });
           }
         });
 
@@ -194,7 +202,9 @@
           },
           onEachFeature: function(feature, layer){
             var tooltipInfo = "Precint: "+ feature.properties.PRECINCT_I
-            layer.bindTooltip(tooltipInfo);
+            layer.bindTooltip(tooltipInfo, {
+              sticky: true
+            });
           }
         }).addTo(map);
 
