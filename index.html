@@ -103,7 +103,7 @@
             }
           },
           onEachFeature: function(feature, layer){
-            var tooltipInfo = "Congressional District: "+ feature.properties.DISTRICT
+            var tooltipInfo = "Congressional District: <b>"+ feature.properties.DISTRICT +"</b>"
             layer.bindTooltip(tooltipInfo,{
               sticky: true //sticky: true has tooltip follow mouse
             });
@@ -119,7 +119,7 @@
             }
           },
           onEachFeature: function(feature, layer){
-            var tooltipInfo = "House District: "+ feature.properties.DISTRICT
+            var tooltipInfo = "House District: <b>"+ feature.properties.DISTRICT +"</b>"
             layer.bindTooltip(tooltipInfo,{
               sticky: true
             });
@@ -141,7 +141,7 @@
             }
           },
           onEachFeature: function(feature, layer){
-            var tooltipInfo = "School Board District: "+ feature.properties.DISTRICT
+            var tooltipInfo = "School Board District: <b>"+ feature.properties.DISTRICT +"</b>"
             layer.bindTooltip(tooltipInfo,{
               sticky: true
             });
@@ -164,7 +164,7 @@
             }
           },
           onEachFeature: function(feature, layer){
-            var tooltipInfo = "Commission District: "+ feature.properties.DISTRICT
+            var tooltipInfo = "Commission District:<b> "+ feature.properties.DISTRICT+ "</b>"
             layer.bindTooltip(tooltipInfo, {
               sticky: true
             });
@@ -201,7 +201,7 @@
             }
           },
           onEachFeature: function(feature, layer){
-            var tooltipInfo = "Precint: "+ feature.properties.PRECINCT_I
+            var tooltipInfo = "Precint: <b>"+ feature.properties.PRECINCT_I +"</b>"
             layer.bindTooltip(tooltipInfo, {
               sticky: true
             });
