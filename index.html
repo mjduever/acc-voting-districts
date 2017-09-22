@@ -109,6 +109,18 @@
             });
           }
         });
+        // add User interaction with mouseover, mouseout
+        congressLayer.eachLayer(function(layer) {
+  				layer.on('mouseover', function(e) {
+  					e.target.setStyle({ //changes layer color of selected
+  						opacity: 0.5
+  					}).bringToFront();
+  				}).on("mouseout", function(e){
+  					e.target.setStyle({ // returns to original layer color
+  						opacity: 1.0
+  					});
+  				})
+  			});
 
         var houseLayer = L.geoJson(house[0],{
           style: function(feature){
@@ -125,6 +137,18 @@
             });
           }
         });
+        // add User interaction with mouseover, mouseout
+        houseLayer.eachLayer(function(layer) {
+  				layer.on('mouseover', function(e) {
+  					e.target.setStyle({ //changes layer color of selected
+  						opacity: 0.5
+  					}).bringToFront();
+  				}).on("mouseout", function(e){
+  					e.target.setStyle({ // returns to original layer color
+  						opacity: 1.0
+  					});
+  				})
+  			});
 
         var schoolboardLayer = L.geoJson(schoolboard[0],{
           style: function(feature){
@@ -147,6 +171,18 @@
             });
           }
         });
+        // add User interaction with mouseover, mouseout
+        schoolboardLayer.eachLayer(function(layer) {
+  				layer.on('mouseover', function(e) {
+  					e.target.setStyle({ //changes layer color of selected
+  						opacity: 0.5
+  					}).bringToFront();
+  				}).on("mouseout", function(e){
+  					e.target.setStyle({ // returns to original layer color
+  						opacity: 1.0
+  					});
+  				})
+  			});
 
         var commissionLayer = L.geoJson(commission[0],{
           style: function(feature){
@@ -169,7 +205,20 @@
               sticky: true
             });
           }
+
         });
+        // add User interaction with mouseover, mouseout
+        commissionLayer.eachLayer(function(layer) {
+  				layer.on('mouseover', function(e) {
+  					e.target.setStyle({ //changes layer color of selected
+  						opacity: 0.5
+  					}).bringToFront();
+  				}).on("mouseout", function(e){
+  					e.target.setStyle({ // returns to original layer color
+  						opacity: 1.0
+  					});
+  				})
+  			});
 
         var precinctLayer = L.geoJson(precincts[0],{
           style: function(feature){
@@ -208,17 +257,17 @@
           }
         }).addTo(map);
         // add User interaction with mouseover, mouseout
-			// precinctLayer.eachLayer(function(layer) {
-			// 	layer.on('mouseover', function(e) {
-			// 		e.target.setStyle({ //changes layer color of selected
-			// 			color: 'yellow'
-			// 		}).bringToFront();
-			// 	}).on("mouseout", function(e){
-			// 		e.target.setStyle({ // returns to original layer color
-			// 			color: '#dddddd'
-			// 		});
-			// 	})
-			// });
+			precinctLayer.eachLayer(function(layer) {
+				layer.on('mouseover', function(e) {
+					e.target.setStyle({ //changes layer color of selected
+						opacity: 0.5
+					}).bringToFront();
+				}).on("mouseout", function(e){
+					e.target.setStyle({ // returns to original layer color
+						opacity: 1.0
+					});
+				})
+			});
 
 // create layer control
       var baseMaps = {
