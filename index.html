@@ -207,6 +207,18 @@
             });
           }
         }).addTo(map);
+        // add User interaction with mouseover, mouseout
+			precinctLayer.eachLayer(function(layer) {
+				layer.on('mouseover', function(e) {
+					e.target.setStyle({ //changes layer color of selected
+						color: 'yellow'
+					}).bringToFront();
+				}).on("mouseout", function(e){
+					e.target.setStyle({ // returns to original layer color
+						color: '#dddddd'
+					});
+				})
+			});
 
 // create layer control
       var baseMaps = {
@@ -305,9 +317,7 @@
     }); // end geocoder callback
 
 
-//      call info panel
-    //  drawInfo();
-//      updateInfo(precinctLayer, commissionLayer, schoolboardLayer, houseLayer, congressLayer);
+
 }); // end done loading data
 
     function drawInfo() {
@@ -327,7 +337,7 @@
 
       console.log(precinct, commission, schoolBoard, house, congressional)
 
-      var html = "<h3>" + "Voting Districts</h3>" +
+      var html = "<h3>" + "<b>This address is in:</b></h3>" +
         "Precinct: <b>" + precinct + "</b><br>" +
         "Commission District: <b>" + commission + "</b><br>" +
         "School Board District: <b>" + schoolBoard + "</b><br>" +
