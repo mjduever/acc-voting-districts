@@ -10,17 +10,18 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
 
   <style>
-  .info {
-  			padding: 6px 8px;
-  			font-size: 1em;
-  			background: rgba(255, 255, 255, 0.8);
-  			box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  			border-radius: 5px;
-  			text-align: right;
-  		}
-  		.info h3 {
-  			margin: 0;
-  		}
+    .info {
+      padding: 6px 8px;
+      font-size: 1em;
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+      text-align: right;
+    }
+
+    .info h3 {
+      margin: 0;
+    }
   </style>
 
 </head>
@@ -30,10 +31,54 @@
     <div class='col col--12 col--3-ml px12 viewport-third viewport-full-ml'>
       <div class='h-full scroll-auto relative'>
         <h1 class='txt-h2 mb6'>Athens-Clarke County Voting Districts</h1>
-        <p>Find your voting district for local and statewide elections. Enter your address into the search box on the left.</p><br>
-        <p>This map shows precincts, commission districts, school board districts, congressional districts, and the state house districts.</p>
+        <p>Find your districts for local and statewide elections. Enter your address into the search box on the left and your districts will be displayed for you.</p><br>
+        <p>Your Precinct number will determine your polling location. For the latest information on polling locations, candidates, and upcoming elections (including special elections), check out the ACC Board of Elections</p>
+        <div class='txt-s'>
+          <hr class='txt-hr'>
+          <div class='txt-h5'>ACC Board of Commissioners</div>
+          <p>The 10 Commissioners along with the Mayor have executive and legislative duties, including:
+            <div class='txt-ul'>
+              <div class='txt-li'>enact and administer local ordinances</div>
+              <div class='txt-li'>approve budgets and oversee spending</div>
+              <div class='txt-li'>hire county employees</div>
+            </div>
+          <div class="prose">
+            <p>Elected to a 4 year term<br>
+              Elections held every two years</p>  </div>
+            <br>
+            <div class='txt-h5'>Clarke County School Board</div>
+            The 9 School Board members serve as the education watchdogs for the county by:
+            <div class='txt-ul'>
+              <div class='txt-li'>making decisions about school programs</div>
+              <div class='txt-li'>incorporating their community’s view of what students should know and be able to do></div>
+              <div class='txt-li'>ensuring students get the best education for the tax dollars spent</div>
+            </div>
+            <div class="prose">
+            <p>Elected to a four year term<br>
+            Elections held every two years</p> </div>
+            <br>
+            <div class='txt-h5'>Georgia General Assembly</div>
+            <div class='txt-ul'>
+              <div class='txt-li'>Consists of a State House of Representatives and a State Senate</div>
+              <div class='txt-li'>180 seats in the State House and 56 seats in the State Senate</div>
+              <div class='txt-li'>Both State Representatives and State Senators are elected to 2 year terms</div>
+            </div>
+            <br>
+            <div class='txt-h5'>US House of Representatives</div>
+            <div class="prose">
+              <p>Georgia has 14 members of the U.S. House of Representatives<br>
+              Elected to a 2 year term</p>
+            </div>
+              <!-- <br>
+              <div class='txt-h5'>US Senate</div>
+              <div class='txt-ul'>
+                <li>Georgia has 2 state senators that represent the entire state</li>
+              <li>Both elected to 6 year terms</li></div> -->
+          </p>
+          </div>
 
-        <footer class='mt12 bg-gray-faint txt-s absolute w-full bottom px12'>
+
+        <footer class='mt12 bg-gray-faint txt-s relative w-full bottom px12'>
           <ul>
             <li>See the original <a class='link' href='http://athensclarkecounty.com/248/Current-District-Maps'>maps</a></li>
             <li>Explore the original <a class='link' href='http://www.legis.ga.gov/Joint/reapportionment/en-US/default.aspx'>data</a></li>
@@ -43,363 +88,502 @@
       </div>
     </div>
     <div class='col col--12 col--9-ml h180 h-full-ml'>
-    <div id="map" class='viewport-twothirds viewport-full-ml'></div>
+      <div id="map" class='viewport-twothirds viewport-full-ml'></div>
 
 
-    <script
-    src="https://code.jquery.com/jquery-3.2.1.min.js"
-    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-    crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.js"></script>
-    <script async defer src='https://api.mapbox.com/mapbox-assembly/v0.17.0/assembly.js'></script>
-    <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+      <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.js"></script>
+      <script async defer src='https://api.mapbox.com/mapbox-assembly/v0.17.0/assembly.js'></script>
+      <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
 
-    <script>
-
-//create map
-      var map = L.map('map', {
-        center: [33.938718, -83.371200], //center map
-        zoom: 11.5, //initial zoom level,
-        zoomControl: false
-    });
-//add map tile layer, something with streets
-      var tiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+      <script>
+        //create map
+        var map = L.map('map', {
+          center: [33.938718, -83.371200], //center map
+          zoom: 11.5, //initial zoom level,
+          zoomControl: false
+        });
+        //add map tile layer, something with streets
+        var tiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
           attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
           maxZoom: 16,
           minZoom: 11
-      }).addTo(map);
-// add geocoder
-      var options = {
-        bounds: true,
-        position: 'topleft',
-        expanded: true
-      };
-
-      var geocoder = L.control.geocoder('mapzen-zeZY4Xt', options).addTo(map);
-
-      //add zoom control with your options
-      L.control.zoom({
-          position:'topleft'
-      }).addTo(map);
-
-      drawInfo();
-
-//asynchronous loading of the data, multiple layers
-    $.when(
-      $.getJSON('data/precincts.json'),
-      $.getJSON('data/commission.json'),
-      $.getJSON('data/congress.json'),
-      $.getJSON('data/house.json'),
-      $.getJSON('data/schoolboard.json')
-    ).done(function(precincts, commission, congress, house, schoolboard){
-        // can access data like this:
-
-        var congressLayer = L.geoJson(congress[0],{
-          style: function(feature){
-            switch (feature.properties.DISTRICT){
-              case '009': return{color:"#66c2a5"};
-              case '010': return{color: "#fc8d62"};
-            }
-          },
-          onEachFeature: function(feature, layer){
-            var tooltipInfo = "Congressional District: <b>"+ feature.properties.DISTRICT +"</b>"
-            layer.bindTooltip(tooltipInfo,{
-              sticky: true //sticky: true has tooltip follow mouse
-            });
-          }
-        });
-        // add User interaction with mouseover, mouseout
-        congressLayer.eachLayer(function(layer) {
-  				layer.on('mouseover', function(e) {
-  					e.target.setStyle({ //changes layer color of selected
-  						opacity: 0.3
-  					}).bringToFront();
-  				}).on("mouseout", function(e){
-  					e.target.setStyle({ // returns to original layer color
-  						opacity: 1.0
-  					});
-  				})
-  			});
-
-        var houseLayer = L.geoJson(house[0],{
-          style: function(feature){
-            switch (feature.properties.DISTRICT){
-              case '117': return{color:"#66c2a5"};
-              case '118': return{color: "#fc8d62"};
-              case '119' : return{color: "#8da0cb"};
-            }
-          },
-          onEachFeature: function(feature, layer){
-            var tooltipInfo = "House District: <b>"+ feature.properties.DISTRICT +"</b>"
-            layer.bindTooltip(tooltipInfo,{
-              sticky: true
-            });
-          }
-        });
-        // add User interaction with mouseover, mouseout
-        houseLayer.eachLayer(function(layer) {
-  				layer.on('mouseover', function(e) {
-  					e.target.setStyle({ //changes layer color of selected
-  						opacity: 0.3
-  					}).bringToFront();
-  				}).on("mouseout", function(e){
-  					e.target.setStyle({ // returns to original layer color
-  						opacity: 1.0
-  					});
-  				})
-  			});
-
-        var schoolboardLayer = L.geoJson(schoolboard[0],{
-          style: function(feature){
-            switch (feature.properties.DISTRICT){
-              case '001': return{color: "#a6cee3"};
-              case '002': return{color: "#1f78b4"};
-              case '003': return{color: "#b2df8a"};
-              case '004': return{color: "#33a02c"};
-              case '005': return{color: "#fb9a99"};
-              case '006': return{color: "#e31a1c"};
-              case '007': return{color: "#fdbf6f"};
-              case '008': return{color: "#ff7f00"};
-              case '009': return{color: "#cab2d6"};
-            }
-          },
-          onEachFeature: function(feature, layer){
-            var tooltipInfo = "School Board District: <b>"+ feature.properties.DISTRICT +"</b>"
-            layer.bindTooltip(tooltipInfo,{
-              sticky: true
-            });
-          }
-        });
-        // add User interaction with mouseover, mouseout
-        schoolboardLayer.eachLayer(function(layer) {
-  				layer.on('mouseover', function(e) {
-  					e.target.setStyle({ //changes layer color of selected
-  						opacity: 0.3
-  					}).bringToFront();
-  				}).on("mouseout", function(e){
-  					e.target.setStyle({ // returns to original layer color
-  						opacity: 1.0
-  					});
-  				})
-  			});
-
-        var commissionLayer = L.geoJson(commission[0],{
-          style: function(feature){
-            switch (feature.properties.DISTRICT){
-              case '001': return{color: "#a6cee3"};
-              case '002': return{color: "#1f78b4"};
-              case '003': return{color: "#b2df8a"};
-              case '004': return{color: "#33a02c"};
-              case '005': return{color: "#fb9a99"};
-              case '006': return{color: "#e31a1c"};
-              case '007': return{color: "#fdbf6f"};
-              case '008': return{color: "#ff7f00"};
-              case '009': return{color: "#cab2d6"};
-              case '010': return{color: "#6a3d9a"};
-            }
-          },
-          onEachFeature: function(feature, layer){
-            var tooltipInfo = "Commission District:<b> "+ feature.properties.DISTRICT+ "</b>"
-            layer.bindTooltip(tooltipInfo, {
-              sticky: true
-            });
-          }
-
-        });
-        // add User interaction with mouseover, mouseout
-        commissionLayer.eachLayer(function(layer) {
-  				layer.on('mouseover', function(e) {
-  					e.target.setStyle({ //changes layer color of selected
-  						opacity: 0.3
-  					}).bringToFront();
-  				}).on("mouseout", function(e){
-  					e.target.setStyle({ // returns to original layer color
-  						opacity: 1.0
-  					});
-  				})
-  			});
-
-        var precinctLayer = L.geoJson(precincts[0],{
-          style: function(feature){
-            switch (feature.properties.PRECINCT_I){
-              case '1A': return{color: "#b2e2e2"};
-              case '1B': return{color: "#66c2a4"};
-              case '1C': return{color: "#238b45"};
-              case '1D': return{color: "#006d2c"};
-              case '2A': return{color: "#8c96c6"};
-              case '2B': return{color: "#8856a7"};
-              case '3A': return{color: "#df65b0"};
-              case '3B': return{color: "#dd1c77"};
-              case '4A': return{color: "#67a9cf"};
-              case '4B': return{color: "#1c9099"};
-              case '5A': return{color: "#fdcc8a"};
-              case '5B': return{color: "#fc8d59"};
-              case '5C': return{color: "#d7301f"};
-              case '5D': return{color: "#b30000"};
-              case '6A': return{color: "#bdc9e1"};
-              case '6B': return{color: "#74a9cf"};
-              case '6C': return{color: "#0570b0"};
-              case '6D': return{color: "#045a8d"};
-              case '7A': return{color: "#edf8b1"};
-              case '7B': return{color: "#7fcdbb"};
-              case '7C': return{color: "#2c7fb8"};
-              case '8A': return{color: "#fff7bc"};
-              case '8B': return{color: "#fec44f"};
-              case '8C': return{color: "#d95f0e"};
-            }
-          },
-          onEachFeature: function(feature, layer){
-            var tooltipInfo = "Precint: <b>"+ feature.properties.PRECINCT_I +"</b>"
-            layer.bindTooltip(tooltipInfo, {
-              sticky: true
-            });
-          }
         }).addTo(map);
-        // add User interaction with mouseover, mouseout
-			precinctLayer.eachLayer(function(layer) {
-				layer.on('mouseover', function(e) {
-					e.target.setStyle({ //changes layer color of selected
-						opacity: 0.3
-					}).bringToFront();
-				}).on("mouseout", function(e){
-					e.target.setStyle({ // returns to original layer color
-						opacity: 1.0
-					});
-				})
-			});
+        // add geocoder
+        var options = {
+          bounds: true,
+          position: 'topleft',
+          expanded: true
+        };
 
-// create layer control
-      var baseMaps = {
-          "Precincts": precinctLayer,
-          "Commission Districts": commissionLayer,
-          "School Board Districts": schoolboardLayer,
-          "State House Districts": houseLayer,
-          "Congressional Districts": congressLayer
-      };
-      var layersControl = new L.Control.Layers(baseMaps, null, {collapsed: false});
-      map.addControl(layersControl);
+        var geocoder = L.control.geocoder('mapzen-zeZY4Xt', options).addTo(map);
 
-      // listen for
-      geocoder.on('select', function(result) {
-        // store lat long of result
-        var latlng = [result.latlng.lng, result.latlng.lat];
+        //add zoom control with your options
+        L.control.zoom({
+          position: 'topleft'
+        }).addTo(map);
 
-        var precinct, commission, schoolBoard, house, congressional;
+        drawInfo();
 
-        // create a geojson feature point
-        var point = turf.point(latlng);
+        //asynchronous loading of the data, multiple layers
+        $.when(
+          $.getJSON('data/precincts.json'),
+          $.getJSON('data/commission.json'),
+          $.getJSON('data/congress.json'),
+          $.getJSON('data/house.json'),
+          $.getJSON('data/schoolboard.json')
+        ).done(function(precincts, commission, congress, house, schoolboard) {
+          // can access data like this:
 
-        // loop through layers of featuregroup
-        precinctLayer.eachLayer(function(layer) {
+          var congressLayer = L.geoJson(congress[0], {
+            style: function(feature) {
+              switch (feature.properties.DISTRICT) {
+                case '009':
+                  return {
+                    color: "#66c2a5"
+                  };
+                case '010':
+                  return {
+                    color: "#fc8d62"
+                  };
+              }
+            },
+            onEachFeature: function(feature, layer) {
+              var tooltipInfo = "Congressional District: <b>" + feature.properties.DISTRICT + "</b>"
+              layer.bindTooltip(tooltipInfo, {
+                sticky: true //sticky: true has tooltip follow mouse
+              });
+            }
+          });
+          // add User interaction with mouseover, mouseout
+          congressLayer.eachLayer(function(layer) {
+            layer.on('mouseover', function(e) {
+              e.target.setStyle({ //changes layer color of selected
+                opacity: 0.3
+              }).bringToFront();
+            }).on("mouseout", function(e) {
+              e.target.setStyle({ // returns to original layer color
+                opacity: 1.0
+              });
+            })
+          });
 
-          // convert Leaflet layer to geojson
-          var poly = layer.toGeoJSON();
+          var houseLayer = L.geoJson(house[0], {
+            style: function(feature) {
+              switch (feature.properties.DISTRICT) {
+                case '117':
+                  return {
+                    color: "#66c2a5"
+                  };
+                case '118':
+                  return {
+                    color: "#fc8d62"
+                  };
+                case '119':
+                  return {
+                    color: "#8da0cb"
+                  };
+              }
+            },
+            onEachFeature: function(feature, layer) {
+              var tooltipInfo = "House District: <b>" + feature.properties.DISTRICT + "</b>"
+              layer.bindTooltip(tooltipInfo, {
+                sticky: true
+              });
+            }
+          });
+          // add User interaction with mouseover, mouseout
+          houseLayer.eachLayer(function(layer) {
+            layer.on('mouseover', function(e) {
+              e.target.setStyle({ //changes layer color of selected
+                opacity: 0.3
+              }).bringToFront();
+            }).on("mouseout", function(e) {
+              e.target.setStyle({ // returns to original layer color
+                opacity: 1.0
+              });
+            })
+          });
 
-          // if the point is inside the polygon
-          if(turf.inside(point, poly)) {
+          var schoolboardLayer = L.geoJson(schoolboard[0], {
+            style: function(feature) {
+              switch (feature.properties.DISTRICT) {
+                case '001':
+                  return {
+                    color: "#a6cee3"
+                  };
+                case '002':
+                  return {
+                    color: "#1f78b4"
+                  };
+                case '003':
+                  return {
+                    color: "#b2df8a"
+                  };
+                case '004':
+                  return {
+                    color: "#33a02c"
+                  };
+                case '005':
+                  return {
+                    color: "#fb9a99"
+                  };
+                case '006':
+                  return {
+                    color: "#e31a1c"
+                  };
+                case '007':
+                  return {
+                    color: "#fdbf6f"
+                  };
+                case '008':
+                  return {
+                    color: "#ff7f00"
+                  };
+                case '009':
+                  return {
+                    color: "#cab2d6"
+                  };
+              }
+            },
+            onEachFeature: function(feature, layer) {
+              var tooltipInfo = "School Board District: <b>" + feature.properties.DISTRICT + "</b>"
+              layer.bindTooltip(tooltipInfo, {
+                sticky: true
+              });
+            }
+          });
+          // add User interaction with mouseover, mouseout
+          schoolboardLayer.eachLayer(function(layer) {
+            layer.on('mouseover', function(e) {
+              e.target.setStyle({ //changes layer color of selected
+                opacity: 0.3
+              }).bringToFront();
+            }).on("mouseout", function(e) {
+              e.target.setStyle({ // returns to original layer color
+                opacity: 1.0
+              });
+            })
+          });
 
-            // we have access to the polygon here
+          var commissionLayer = L.geoJson(commission[0], {
+            style: function(feature) {
+              switch (feature.properties.DISTRICT) {
+                case '001':
+                  return {
+                    color: "#a6cee3"
+                  };
+                case '002':
+                  return {
+                    color: "#1f78b4"
+                  };
+                case '003':
+                  return {
+                    color: "#b2df8a"
+                  };
+                case '004':
+                  return {
+                    color: "#33a02c"
+                  };
+                case '005':
+                  return {
+                    color: "#fb9a99"
+                  };
+                case '006':
+                  return {
+                    color: "#e31a1c"
+                  };
+                case '007':
+                  return {
+                    color: "#fdbf6f"
+                  };
+                case '008':
+                  return {
+                    color: "#ff7f00"
+                  };
+                case '009':
+                  return {
+                    color: "#cab2d6"
+                  };
+                case '010':
+                  return {
+                    color: "#6a3d9a"
+                  };
+              }
+            },
+            onEachFeature: function(feature, layer) {
+              var tooltipInfo = "Commission District:<b> " + feature.properties.DISTRICT + "</b>"
+              layer.bindTooltip(tooltipInfo, {
+                sticky: true
+              });
+            }
 
-            precinct = poly.properties.PRECINCT_I;
+          });
+          // add User interaction with mouseover, mouseout
+          commissionLayer.eachLayer(function(layer) {
+            layer.on('mouseover', function(e) {
+              e.target.setStyle({ //changes layer color of selected
+                opacity: 0.3
+              }).bringToFront();
+            }).on("mouseout", function(e) {
+              e.target.setStyle({ // returns to original layer color
+                opacity: 1.0
+              });
+            })
+          });
+
+          var precinctLayer = L.geoJson(precincts[0], {
+            style: function(feature) {
+              switch (feature.properties.PRECINCT_I) {
+                case '1A':
+                  return {
+                    color: "#b2e2e2"
+                  };
+                case '1B':
+                  return {
+                    color: "#66c2a4"
+                  };
+                case '1C':
+                  return {
+                    color: "#238b45"
+                  };
+                case '1D':
+                  return {
+                    color: "#006d2c"
+                  };
+                case '2A':
+                  return {
+                    color: "#8c96c6"
+                  };
+                case '2B':
+                  return {
+                    color: "#8856a7"
+                  };
+                case '3A':
+                  return {
+                    color: "#df65b0"
+                  };
+                case '3B':
+                  return {
+                    color: "#dd1c77"
+                  };
+                case '4A':
+                  return {
+                    color: "#67a9cf"
+                  };
+                case '4B':
+                  return {
+                    color: "#1c9099"
+                  };
+                case '5A':
+                  return {
+                    color: "#fdcc8a"
+                  };
+                case '5B':
+                  return {
+                    color: "#fc8d59"
+                  };
+                case '5C':
+                  return {
+                    color: "#d7301f"
+                  };
+                case '5D':
+                  return {
+                    color: "#b30000"
+                  };
+                case '6A':
+                  return {
+                    color: "#bdc9e1"
+                  };
+                case '6B':
+                  return {
+                    color: "#74a9cf"
+                  };
+                case '6C':
+                  return {
+                    color: "#0570b0"
+                  };
+                case '6D':
+                  return {
+                    color: "#045a8d"
+                  };
+                case '7A':
+                  return {
+                    color: "#edf8b1"
+                  };
+                case '7B':
+                  return {
+                    color: "#7fcdbb"
+                  };
+                case '7C':
+                  return {
+                    color: "#2c7fb8"
+                  };
+                case '8A':
+                  return {
+                    color: "#fff7bc"
+                  };
+                case '8B':
+                  return {
+                    color: "#fec44f"
+                  };
+                case '8C':
+                  return {
+                    color: "#d95f0e"
+                  };
+              }
+            },
+            onEachFeature: function(feature, layer) {
+              var tooltipInfo = "Precint: <b>" + feature.properties.PRECINCT_I + "</b>"
+              layer.bindTooltip(tooltipInfo, {
+                sticky: true
+              });
+            }
+          }).addTo(map);
+          // add User interaction with mouseover, mouseout
+          precinctLayer.eachLayer(function(layer) {
+            layer.on('mouseover', function(e) {
+              e.target.setStyle({ //changes layer color of selected
+                opacity: 0.3
+              }).bringToFront();
+            }).on("mouseout", function(e) {
+              e.target.setStyle({ // returns to original layer color
+                opacity: 1.0
+              });
+            })
+          });
+
+          // create layer control
+          var baseMaps = {
+            "Precincts": precinctLayer,
+            "Commission Districts": commissionLayer,
+            "School Board Districts": schoolboardLayer,
+            "State House Districts": houseLayer,
+            "Congressional Districts": congressLayer
+          };
+          var layersControl = new L.Control.Layers(baseMaps, null, {
+            collapsed: false
+          });
+          map.addControl(layersControl);
+
+          // listen for
+          geocoder.on('select', function(result) {
+            // store lat long of result
+            var latlng = [result.latlng.lng, result.latlng.lat];
+
+            var precinct, commission, schoolBoard, house, congressional;
+
+            // create a geojson feature point
+            var point = turf.point(latlng);
+
+            // loop through layers of featuregroup
+            precinctLayer.eachLayer(function(layer) {
+
+              // convert Leaflet layer to geojson
+              var poly = layer.toGeoJSON();
+
+              // if the point is inside the polygon
+              if (turf.inside(point, poly)) {
+
+                // we have access to the polygon here
+
+                precinct = poly.properties.PRECINCT_I;
+              }
+
+            })
+            // loop through layers of featuregroup
+            commissionLayer.eachLayer(function(layer) {
+
+              // convert Leaflet layer to geojson
+              var poly = layer.toGeoJSON();
+
+              // if the point is inside the polygon
+              if (turf.inside(point, poly)) {
+
+                // we have access to the polygon here
+                commission = poly.properties.DISTRICT;
+
+              }
+            })
+            // loop through layers of featuregroup
+            schoolboardLayer.eachLayer(function(layer) {
+
+              // convert Leaflet layer to geojson
+              var poly = layer.toGeoJSON();
+
+              // if the point is inside the polygon
+              if (turf.inside(point, poly)) {
+
+                // we have access to the polygon here
+                schoolBoard = poly.properties.DISTRICT;
+
+              }
+            })
+            // loop through layers of featuregroup
+            houseLayer.eachLayer(function(layer) {
+
+              // convert Leaflet layer to geojson
+              var poly = layer.toGeoJSON();
+
+              // if the point is inside the polygon
+              if (turf.inside(point, poly)) {
+
+                // we have access to the polygon here
+                house = poly.properties.DISTRICT;
+
+              }
+            })
+            // loop through layers of featuregroup
+            congressLayer.eachLayer(function(layer) {
+
+              // convert Leaflet layer to geojson
+              var poly = layer.toGeoJSON();
+
+              // if the point is inside the polygon
+              if (turf.inside(point, poly)) {
+
+                // we have access to the polygon here
+                congressional = poly.properties.DISTRICT;
+
+              }
+            })
+            updateInfo(precinct, commission, schoolBoard, house, congressional)
+
+          }); // end geocoder callback
+
+
+
+        }); // end done loading data
+
+        function drawInfo() {
+          var info = L.control({
+            position: 'bottomleft'
+          });
+          info.onAdd = function(map) {
+            var div = L.DomUtil.create('div', 'info');
+            return div;
           }
+          info.addTo(map);
+          $(".info").hide(); //hides info panel when nothing is mousedover
+        } //end drawinfo
 
-        })
-        // loop through layers of featuregroup
-        commissionLayer.eachLayer(function(layer) {
+        // update info pane about districts on mouse click
+        function updateInfo(precinct, commission, schoolBoard, house, congressional) {
 
-          // convert Leaflet layer to geojson
-          var poly = layer.toGeoJSON();
+          console.log(precinct, commission, schoolBoard, house, congressional)
 
-          // if the point is inside the polygon
-          if(turf.inside(point, poly)) {
-
-            // we have access to the polygon here
-            commission = poly.properties.DISTRICT;
-
-          }
-      })
-      // loop through layers of featuregroup
-        schoolboardLayer.eachLayer(function(layer) {
-
-        // convert Leaflet layer to geojson
-        var poly = layer.toGeoJSON();
-
-        // if the point is inside the polygon
-        if(turf.inside(point, poly)) {
-
-          // we have access to the polygon here
-          schoolBoard = poly.properties.DISTRICT;
-
-        }
-    })
-    // loop through layers of featuregroup
-      houseLayer.eachLayer(function(layer) {
-
-      // convert Leaflet layer to geojson
-      var poly = layer.toGeoJSON();
-
-      // if the point is inside the polygon
-      if(turf.inside(point, poly)) {
-
-        // we have access to the polygon here
-        house = poly.properties.DISTRICT;
-
-      }
-  })
-  // loop through layers of featuregroup
-    congressLayer.eachLayer(function(layer) {
-
-    // convert Leaflet layer to geojson
-    var poly = layer.toGeoJSON();
-
-    // if the point is inside the polygon
-    if(turf.inside(point, poly)) {
-
-      // we have access to the polygon here
-      congressional = poly.properties.DISTRICT;
-
-    }
-})
-      updateInfo(precinct, commission, schoolBoard, house, congressional)
-
-    }); // end geocoder callback
-
-
-
-}); // end done loading data
-
-    function drawInfo() {
-			var info = L.control({
-				position: 'bottomleft'
-			});
-			info.onAdd = function(map) {
-				var div = L.DomUtil.create('div', 'info');
-				return div;
-			}
-			info.addTo(map);
-			$(".info").hide(); //hides info panel when nothing is mousedover
-		} //end drawinfo
-
-    // update info pane about districts on mouse click
-    function updateInfo(precinct, commission, schoolBoard, house, congressional) {
-
-      console.log(precinct, commission, schoolBoard, house, congressional)
-
-      var html = "<h3>" + "<b>This address is in:</b></h3>" +
-        "Precinct: <b>" + precinct + "</b><br>" +
-        "Commission District: <b>" + commission + "</b><br>" +
-        "School Board District: <b>" + schoolBoard + "</b><br>" +
-        "House District: <b>" + house + "</b></br>" +
-        "Congressional District: <b>" + congressional + "</b>";
-      console.log(html);
-      $(".info").html(html);
-      $(".info").show();
-    } //end updateInfo(layer)
-
-
-
-</script>
+          var html = "<h3>" + "<b>This address is in:</b></h3>" +
+            "Precinct: <b>" + precinct + "</b><br>" +
+            "Commission District: <b>" + commission + "</b><br>" +
+            "School Board District: <b>" + schoolBoard + "</b><br>" +
+            "House District: <b>" + house + "</b></br>" +
+            "Congressional District: <b>" + congressional + "</b>";
+          console.log(html);
+          $(".info").html(html);
+          $(".info").show();
+        } //end updateInfo(layer)
+      </script>
 
 </body>
 
