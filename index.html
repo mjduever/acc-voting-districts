@@ -208,17 +208,17 @@
           }
         }).addTo(map);
         // add User interaction with mouseover, mouseout
-			precinctLayer.eachLayer(function(layer) {
-				layer.on('mouseover', function(e) {
-					e.target.setStyle({ //changes layer color of selected
-						color: 'yellow'
-					}).bringToFront();
-				}).on("mouseout", function(e){
-					e.target.setStyle({ // returns to original layer color
-						color: '#dddddd'
-					});
-				})
-			});
+			// precinctLayer.eachLayer(function(layer) {
+			// 	layer.on('mouseover', function(e) {
+			// 		e.target.setStyle({ //changes layer color of selected
+			// 			color: 'yellow'
+			// 		}).bringToFront();
+			// 	}).on("mouseout", function(e){
+			// 		e.target.setStyle({ // returns to original layer color
+			// 			color: '#dddddd'
+			// 		});
+			// 	})
+			// });
 
 // create layer control
       var baseMaps = {
