@@ -131,10 +131,14 @@
           $.getJSON('data/congress.json'),
           $.getJSON('data/house.json'),
           $.getJSON('data/senate.json'),
-          $.getJSON('data/schoolboard.json')
-        ).done(function(precincts, commission, congress, house, senate, schoolboard) {
+          $.getJSON('data/schoolboard.json'),
+          $.getJSON('data/pollingplaces.json')
+        ).done(function(precincts, commission, congress, house, senate, schoolboard, pollingplaces) {
           // can access data like this:
 
+          var pollingLayer = L.geoJson(pollingplaces[0], {
+
+          });
           var congressLayer = L.geoJson(congress[0], {
             style: function(feature) {
               switch (feature.properties.DISTRICT) {
@@ -367,7 +371,7 @@
             // store lat long of result
             var latlng = [result.latlng.lng, result.latlng.lat];
 
-            var precinct, commission, schoolBoard, house, senate, congressional;
+            var precinct, commission, schoolBoard, house, senate, congressional, pollPlace, pollAddress;
 
             // create a geojson feature point
             var point = turf.point(latlng);
@@ -452,7 +456,21 @@
                 congressional = poly.properties.DISTRICT;
               }
             })
-            updateInfo(precinct, commission, schoolBoard, house, senate, congressional)
+            // loop through layers of featuregroup
+            pollingLayer.eachLayer(function(layer) {
+
+              // convert Leaflet layer to geojson
+              var poly = layer.toGeoJSON();
+
+              // if the point is inside the polygon
+              if (turf.inside(point, poly)) {
+
+                // we have access to the polygon here
+                pollPlace = poly.properties.NAME;
+                pollAddress = poly.properties.ADDRESS_1;
+              }
+            })
+            updateInfo(precinct, commission, schoolBoard, house, senate, congressional, pollPlace, pollAddress)
 
           }); // end geocoder callback
 
@@ -471,9 +489,9 @@
         } //end drawinfo
 
         // update info pane about districts on mouse click
-        function updateInfo(precinct, commission, schoolBoard, house, senate, congressional) {
+        function updateInfo(precinct, commission, schoolBoard, house, senate, congressional, pollPlace, pollAddress) {
 
-          console.log(precinct, commission, schoolBoard, house, senate, congressional)
+          console.log(precinct, commission, schoolBoard, house, senate, congressional, pollPlace, pollAddress)
 
           var html = "<h3>" + "<b>This address is in:</b></h3>" +
             "Precinct: <b>" + precinct + "</b><br>" +
@@ -481,7 +499,9 @@
             "School Board District: <b>" + schoolBoard + "</b><br>" +
             "State House District: <b>" + house + "</b><br>" +
             "State Senate District: <b>" + senate + "</b><br>" +
-            "Congressional District: <b>" + congressional + "</b>";
+            "Congressional District: <b>" + congressional + "</b><br>" +
+            "Polling Place: <b>"+ pollPlace + "</b><br>" +
+            "Address: <b>" + pollAddress + "</b>";
           console.log(html);
           $(".info").html(html);
           $(".info").show();
