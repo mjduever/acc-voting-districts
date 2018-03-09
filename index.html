@@ -7,7 +7,8 @@
   <meta name='viewport' content='width=device-width, initial-scale=1'>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
   <link href='https://api.mapbox.com/mapbox-assembly/v0.17.0/assembly.min.css' rel='stylesheet'>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
+  <link rel="stylesheet" href="http://rawgit.com/opencagedata/leaflet-opencage-search/master/dist/css/L.Control.OpenCageSearch.dev.css" />
+
 
   <style>
     .info {
@@ -90,7 +91,7 @@
 
       <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
       <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.js"></script>
+      <script src="http://rawgit.com/opencagedata/leaflet-opencage-search/master/dist/js/L.Control.OpenCageSearch.dev.js"></script>
       <script async defer src='https://api.mapbox.com/mapbox-assembly/v0.17.0/assembly.js'></script>
       <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
 
@@ -110,12 +111,14 @@
 
         // add geocoder
         var options = {
+          key: '011b23198ac0451faeb825579c59f428',
+          limit: 10,
           bounds: true,
           position: 'topleft',
-          expanded: true
+          collapsed: false
         };
 
-        var geocoder = L.control.geocoder('mapzen-zeZY4Xt', options).addTo(map);
+        var geocoder = L.Control.openCageSearch(options).addTo(map);
 
         //add zoom control with your options
         L.control.zoom({
