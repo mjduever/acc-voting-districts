@@ -92,6 +92,7 @@
       <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
       <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
       <script src="http://rawgit.com/opencagedata/leaflet-opencage-search/master/dist/js/L.Control.OpenCageSearch.dev.js"></script>
+      
       <script async defer src='https://api.mapbox.com/mapbox-assembly/v0.17.0/assembly.js'></script>
       <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
 
@@ -115,7 +116,8 @@
           limit: 10,
           bounds: true,
           position: 'topleft',
-          collapsed: false
+          collapsed: false,
+          httpAdapter: 'https'
         };
 
         var geocoder = L.Control.openCageSearch(options).addTo(map);
@@ -370,7 +372,7 @@
           map.addControl(layersControl);
 
           // listen for
-          geocoder.on('select', function(result) {
+          geocoder.geocode('select', function(result) {
             // store lat long of result
             var latlng = [result.latlng.lng, result.latlng.lat];
 
